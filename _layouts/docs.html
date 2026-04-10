@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} | Naren's Blog</title>
+  <style>
+    /* 1. The Layout Grid */
+    body {
+      display: grid;
+      grid-template-columns: 250px 1fr 250px;
+      height: 100vh;
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #333;
+      overflow: hidden; /* Lock the main window, scroll columns inside */
+    }
+
+    /* 2. Column Styling */
+    .sidebar-left, .main-content, .sidebar-right {
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .sidebar-left {
+      background: #f8fafc;
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .sidebar-right {
+      background: #f8fafc;
+      border-left: 1px solid #e2e8f0;
+      font-size: 0.9rem;
+    }
+
+    .main-content {
+      padding: 2rem 4rem;
+      line-height: 1.6;
+    }
+
+    /* 3. Typography & Links */
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 0.5rem; }
+    
+    /* 4. Responsive Design (Hides right sidebar on small screens) */
+    @media (max-width: 1000px) {
+      body { grid-template-columns: 200px 1fr; }
+      .sidebar-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar-left">
+    <h3>All Topics</h3>
+    <ul>
+      {% for post in site.posts %}
+        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <main class="main-content" id="blog-content">
+    <h1>{{ page.title }}</h1>
+    <p><em>Published on {{ page.date | date: "%B %d, %Y" }}</em></p>
+    <hr>
+    {{ content }}
+  </main>
+
+  <aside class="sidebar-right">
+    <h3>On this page</h3>
+    <ul id="dynamic-toc"></ul>
+  </aside>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const content = document.getElementById('blog-content');
+      const toc = document.getElementById('dynamic-toc');
+      const headings = content.querySelectorAll('h2, h3');
+
+      headings.forEach(heading => {
+        // Jekyll usually generates IDs automatically, but just in case:
+        if (!heading.id) {
+          heading.id = heading.innerText.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        }
+
+        const li = document.createElement('li');
+        // Indent h3 tags to show hierarchy
+        if (heading.tagName === 'H3') {
+          li.style.paddingLeft = '1rem';
+        }
+
+        const a = document.createElement('a');
+        a.href = `#${heading.id}`;
+        a.innerText = heading.innerText;
+
+        li.appendChild(a);
+        toc.appendChild(li);
+      });
+    });
+  </script>
+
+</body>
+</html>

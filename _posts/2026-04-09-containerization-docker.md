@@ -1,16 +1,10 @@
 ---
-layout: post
+layout: docs
 title: "Containerization and Docker"
 date: 2026-04-09 10:00:00 +0530
 categories: devops linux
 ---
 
----
-layout: post
-title: "Demystifying Containerization: A Deep Dive into Docker"
-date: 2026-04-09 10:00:00 +0530
-categories: devops linux
----
 
 We’ve all heard the oldest excuse in software engineering: *"Well, it works on my machine!"* Traditionally, deploying software meant hoping the target server had the exact same operating system, libraries, and dependencies as your local laptop. If it didn't, the application crashed. Containerization was invented to solve this problem once and for all. 
 
@@ -60,17 +54,18 @@ We will use Docker. You can follow the official installation guides based on you
 A `Dockerfile` is a blueprint. Create a file named `Dockerfile` in your project folder alongside your `echo` bash script:
 
 ```dockerfile
-# 1. Define the base environment
+## 1. Define the base environment
 FROM alpine:latest
 
-# 2. Install dependencies (Build Time)
+## 2. Install dependencies (Build Time)
 RUN apk add --no-cache bash
 
-# 3. Set the working directory
+## 3. Set the working directory
 WORKDIR /app
 
-# 4. Copy your application code
+## 4. Copy your application code
 COPY ./echo .
 
-# 5. Define the Entry Process (Run Time)
+## 5. Define the Entry Process (Run Time)
 CMD ["./echo"]
+```
